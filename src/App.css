@@ -73,16 +73,8 @@
 /* src/index.css or App.css */
 
 .bg-animated-gradient {
-  background-image: linear-gradient(
-    -45deg,
-    #f800b4,
-    #00eff8,
-    #ebf503,
-    #02f6c1,
-    #00eff8,
-    #9400f8
-  );
-  background-size: 400% 400%;
+  background-image: linear-gradient(-45deg, #f800b4, #00eff8, #9400f8);
+  background-size: 100% 100%;
 }
 
 .animate-gradient-bg {
