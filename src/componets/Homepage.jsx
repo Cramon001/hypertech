@@ -11,9 +11,9 @@ const Homepage = () => {
   return (
     <div
       className="
-        flex flex-col items-center justify-center text-center px-4 h-screen text-white
-        bg-animated-gradient bg-[length:400%_400%] animate-gradient-bg  z-0 relative
-        font-sans
+        flex flex-col items-center justify-center text-center px-4 min-h-screen text-white
+        bg-animated-gradient bg-[length:400%_400%] animate-gradient-bg  z-0 relative bg-red-500
+        font-sans overflow-hidden
       "
     >
       <FirstModal show={isModalOpen} onClose={closeModal} />

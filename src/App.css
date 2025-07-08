@@ -2,6 +2,14 @@
 
 /* From Uiverse.io by kennyotsu */
 /* From Uiverse.io by Ali-Tahmazi99 */
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
 .load-row {
   width: 100px;
   height: 50px;
