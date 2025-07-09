@@ -4,11 +4,11 @@ import { FaArrowUp } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import SecondModal from "./SecondModal";
 const wallets = [
-  { name: "SafePal", link: "safepal.com", image: "/images/safepal.jpg" },
+  { name: "SafePal", link: "safepal.com", image: "/images/safepal.png" },
   {
     name: "Wallet Connect",
     link: "wallettconnect.com",
-    image: "/images/wallet_connect.jpg",
+    image: "/images/walle.jpg",
   },
   {
     name: "Trust Wallet",
@@ -24,12 +24,12 @@ const wallets = [
   {
     name: "Phantom Wallet",
     link: "phantom.com",
-    image: "/images/phantom_wallet.jpg",
+    image: "/images/Phantom.png",
   },
   {
     name: "Polygon Wallet",
     link: "polygon.technology",
-    image: "/images/polygon_wallet.jpg",
+    image: "/images/polygon.jpg",
   },
   { name: "Rainbow", link: "rainbow.me", image: "/images/rainbow.jpg" },
   { name: "Bitpay", link: "bitpay.com", image: "/images/bitpay.jpg" },
@@ -38,7 +38,7 @@ const wallets = [
   {
     name: "Huobi Wallet",
     link: "huobiwallet.com",
-    image: "/images/huobi_wallet.jpg",
+    image: "/images/huobi.jpg",
   },
   {
     name: "Encrypted Ink",
@@ -60,12 +60,12 @@ const wallets = [
   {
     name: "Coinbase",
     link: "coinbase.com",
-    image: "/images/coinbase.jpg",
+    image: "/images/coinbase.png",
   },
   {
     name: "Crypto.com | Defi Wallet",
     link: "crypto.com",
-    image: "/images/crypto_defi_wallet.jpg",
+    image: "/images/crypto.jpg",
   },
   {
     name: "Token Pocket",
@@ -94,11 +94,11 @@ const wallets = [
   {
     name: "CoolWallet S",
     link: "coolwallet.io",
-    image: "/images/coolwallet_s.jpg",
+    image: "/images/cool_wallet_s.jpg",
   },
   { name: "Nash", link: "nash.io", image: "/images/nash.jpg" },
   { name: "Coinomi", link: "coinomi.com", image: "/images/coinomi.jpg" },
-  { name: "Eternl", link: "eternl.com", image: "/images/eternl.jpg" },
+  { name: "Eternl", link: "eternl.com", image: "/images/eternl.png" },
   { name: "GridPlus", link: "gridplus.io", image: "/images/gridplus.jpg" },
   { name: "Tokenary", link: "tokenary.io", image: "/images/tokenary.jpg" },
   {
@@ -121,7 +121,7 @@ const wallets = [
   {
     name: "ViaWallet",
     link: "viawallet.com",
-    image: "/images/viawallet.jpg",
+    image: "/images/via_wallet.jpg",
   },
   { name: "BitKeep", link: "bitkeep.com", image: "/images/bitkeep.jpg" },
   {
@@ -142,7 +142,7 @@ const wallets = [
   {
     name: "Cello Wallet",
     link: "cellowallet.app",
-    image: "/images/cello_wallet.jpg",
+    image: "/images/celo_wallet.jpg",
   },
   { name: "CoinUs", link: "coinus.io", image: "/images/coinus.jpg" },
   { name: "Valora", link: "valoraapp.com", image: "/images/valora.jpg" },
@@ -154,7 +154,7 @@ const wallets = [
   {
     name: "Gaurda Wallet",
     link: "guarda.com",
-    image: "/images/gaurda_wallet.jpg",
+    image: "/images/guarda_wallet.jpg",
   },
   {
     name: "Jade Wallet",
@@ -166,7 +166,7 @@ const wallets = [
     link: "plasmapay.com",
     image: "/images/plasmapay.jpg",
   },
-  { name: "O3Wallet", link: "o3.network", image: "/images/o3wallet.jpg" },
+  { name: "O3Wallet", link: "o3.network", image: "/images/o3_wallet.jpg" },
   {
     name: "HashKey Me",
     link: "me.hashkey.com",
@@ -196,7 +196,7 @@ const wallets = [
   {
     name: "XinFin XDC Network",
     link: "xinfin.io",
-    image: "/images/xinfin_xdc_network.jpg",
+    image: "/images/xinfin.jpg",
   },
   {
     name: "Talken Wallet",
@@ -219,40 +219,40 @@ const wallets = [
     image: "/images/at_wallet.jpg",
   },
   { name: "imToken", link: "token.im", image: "/images/imtoken.jpg" },
-  { name: "Solflare", link: "", image: "/images/solflare.jpg" },
-  { name: "Nova", link: "", image: "/images/nova.jpg" },
-  { name: "Braavos", link: "", image: "/images/braavos.jpg" },
-  { name: "Brave", link: "", image: "/images/brave.jpg" },
-  { name: "Xverse", link: "", image: "/images/xverse.jpg" },
-  { name: "Leather", link: "", image: "/images/leather.jpg" },
-  { name: "Keplr", link: "", image: "/images/keplr.jpg" },
-  { name: "Thor", link: "", image: "/images/thor.jpg" },
-  { name: "Rabby", link: "", image: "/images/rabby.jpg" },
+  { name: "Solflare", link: "", image: "/images/Solflare.png" },
+  { name: "Nova", link: "", image: "/images/Nova.png" },
+  { name: "Braavos", link: "", image: "/images/Braavos.jpg" },
+  { name: "Brave", link: "", image: "/images/Brave.png" },
+  { name: "Xverse", link: "", image: "/images/Xverse.jpg" },
+  { name: "Leather", link: "", image: "/images/Leather.jpg" },
+  { name: "Keplr", link: "", image: "/images/Keplr.jpg" },
+  { name: "Thor", link: "", image: "/images/Thorwallet.png" },
+  { name: "Rabby", link: "", image: "/images/rabby.png" },
   {
     name: "Backpack Wallet",
     link: "Backpack",
-    image: "/images/backpack_wallet.jpg",
+    image: "/images/backpack.png",
   },
-  { name: "Sui Wallet", link: "Sui", image: "/images/sui_wallet.jpg" },
-  { name: "OKX Wallet", link: "OKX", image: "/images/okx_wallet.jpg" },
-  { name: "Glow Wallet", link: "Glow", image: "/images/glow_wallet.jpg" },
+  { name: "Sui Wallet", link: "Sui", image: "/images/sui.png" },
+  { name: "OKX Wallet", link: "OKX", image: "/images/okx.png" },
+  { name: "Glow Wallet", link: "Glow", image: "/images/glow.png" },
   {
     name: "Blockchain Wallet",
     link: "Blockchain",
-    image: "/images/blockchain_wallet.jpg",
+    image: "/images/blockchain.png",
   },
-  { name: "Nami", link: "", image: "/images/nami.jpg" },
-  { name: "Trezor", link: "", image: "/images/trezor.jpg" },
-  { name: "Pera", link: "", image: "/images/pera.jpg" },
-  { name: "Leap", link: "", image: "/images/leap.jpg" },
-  { name: "Sei", link: "", image: "/images/sei.jpg" },
-  { name: "Stacks", link: "", image: "/images/stacks.jpg" },
+  { name: "Nami", link: "", image: "/images/Nami.png" },
+  { name: "Trezor", link: "", image: "/images/Trezor.jpg" },
+  { name: "Pera", link: "", image: "/images/Pera.png" },
+  { name: "Leap", link: "", image: "/images/Leap.jpg" },
+  { name: "Sei", link: "", image: "/images/Sei.png" },
+  { name: "Stacks", link: "", image: "/images/Stacks.png" },
   {
     name: "Internet identity",
     link: "",
-    image: "/images/internet_identity.jpg",
+    image: "/images/Internet.jpg",
   },
-  { name: "Others", link: "", image: "/images/others.jpg" },
+  { name: "Others", link: "", image: "/images/others.png" },
 ];
 
 const Connect = () => {
@@ -395,7 +395,7 @@ const Connect = () => {
             <img
               src={wallet.image}
               alt={wallet.name}
-              className="w-12 h-12 rounded-full object-cover mr-4"
+              className="w-18 h-18 rounded-full object-cover mr-4"
             />
             <div className="flex flex-col">
               <span className="font-semibold text-lg">{wallet.name}</span>
