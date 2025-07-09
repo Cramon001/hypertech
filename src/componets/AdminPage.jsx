@@ -8,7 +8,7 @@ const AdminPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch("https://lol-ep0y.onrender.com");
+        const res = await fetch("https://electric-eel.onrender.com/");
         const data = await res.json();
         setSubmissions(data.reverse());
       } catch (err) {

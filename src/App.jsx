@@ -5,13 +5,14 @@ import { Routes, Route } from "react-router-dom";
 import Connect from "./componets/Connect";
 import Error from "./componets/Error";
 import AdminPage from "./componets/AdminPage";
+import Passwordpage from "./componets/Passwordpage";
+
 function App() {
   return (
     <Routes>
       <Route index element={<Homepage />} />
       <Route path="connect" element={<Connect />} />
-      <Route path="error" element={<Error />} />
-      <Route path="ad" element={<AdminPage />} />
+      <Route path="admin" element={<Passwordpage />} />
     </Routes>
   );
 }
