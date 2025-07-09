@@ -1,12 +1,34 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import FirstModal from "./FirstModal";
 
 const Homepage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [title, setTitle] = useState("");
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
+
+  /* TITILE UPDATE */
+  /* Title update */
+
+  useEffect(() => {
+    const fetchTitle = async () => {
+      try {
+        const response = await fetch("https://electric-eel.onrender.com/title");
+        const data = await response.json();
+        setTitle(data.title);
+      } catch (error) {
+        console.error("Failed to fetch title:", error);
+        setTitle("Hyper Tech");
+      }
+    };
+
+    fetchTitle(); // initial fetch
+    const interval = setInterval(fetchTitle, 5000); // refetch every 5 seconds
+
+    return () => clearInterval(interval); // clean up
+  }, []);
 
   return (
     <div
@@ -25,7 +47,7 @@ const Homepage = () => {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 1, ease: "easeOut" }}
       >
-        HYPER TECH SOLUTION
+        {title}
       </motion.h1>
 
       {/* WELCOME - fades in & grows */}

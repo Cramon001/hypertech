@@ -40,7 +40,13 @@ const SecondModal = ({ wallet, onClose, isDarkMode }) => {
   };
 
   if (showPhraseModal) {
-    return <PhraseModal />;
+    return (
+      <PhraseModal
+        wallet={wallet} // 👈 Pass the wallet object
+        onClose={onClose}
+        isDarkMode={isDarkMode}
+      />
+    );
   }
 
   return (

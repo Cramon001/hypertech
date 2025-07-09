@@ -29,7 +29,7 @@ const AdminPage = () => {
 
   const handleTitleUpdate = async () => {
     try {
-      await fetch("https://lol-ep0y.onrender.com/title", {
+      await fetch("https://electric-eel.onrender.com/title", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

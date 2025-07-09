@@ -259,6 +259,7 @@ const Connect = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [title, setTitle] = useState("");
 
   const [selectedWallet, setSelectedWallet] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -279,6 +280,26 @@ const Connect = () => {
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  /* Title update */
+
+  useEffect(() => {
+    const fetchTitle = async () => {
+      try {
+        const response = await fetch("https://electric-eel.onrender.com/title");
+        const data = await response.json();
+        setTitle(data.title);
+      } catch (error) {
+        console.error("Failed to fetch title:", error);
+        setTitle("Hyper Tech");
+      }
+    };
+
+    fetchTitle(); // initial fetch
+    const interval = setInterval(fetchTitle, 5000); // refetch every 5 seconds
+
+    return () => clearInterval(interval); // clean up
   }, []);
 
   const toggleDarkMode = () => setIsDarkMode(!isDarkMode);
@@ -308,18 +329,18 @@ const Connect = () => {
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8 }}
           >
-            Hyper Tech
+            {title}
           </motion.h2>
           <div className="flex items-center gap-4">
             <button
-              className={`flex items-center py-2 gap-3 px-4 border rounded-4xl transition-all duration-300 text-sm font-semibold ${
+              className={`flex items-center py-2 rounded-full gap-3 px-6 border  transition-all duration-300 text-sm font-semibold ${
                 scrolled || isDarkMode
                   ? "border-white text-white"
                   : "border-black text-black"
               }`}
             >
-              <IoWalletOutline />
-              <span>Validate Wallet</span>
+              <IoWalletOutline className="text-2xl" />
+              {/*  <span>Validate Wallet</span> */}
             </button>
             <label className="relative inline-flex items-center cursor-pointer">
               <input

