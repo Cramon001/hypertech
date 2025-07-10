@@ -30,6 +30,11 @@ const Homepage = () => {
     return () => clearInterval(interval); // clean up
   }, []);
 
+
+  useEffect(() => {
+  document.title = `Welcome ${title}`;
+}, [title]);
+
   return (
     <div
       className="
