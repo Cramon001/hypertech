@@ -272,6 +272,10 @@ const Connect = () => {
     localStorage.setItem("darkMode", isDarkMode);
   }, [isDarkMode]);
 
+    useEffect(() => {
+    document.title = "Connect Wallet";
+  }, []);
+
   useEffect(() => {
     const handleScroll = () => {
       const y = window.scrollY;
