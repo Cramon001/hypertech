@@ -359,7 +359,7 @@ const Connect = () => {
         </div>
       </div>
       <div className="h-16" /> {/* Spacer */}
-      {/* Title */}
+      { Title }
       <motion.div
         className="grid items-center justify-center text-center mt-10"
         initial={{ opacity: 0, y: 30 }}
