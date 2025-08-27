@@ -52,7 +52,7 @@ const Homepage = () => {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 1, ease: "easeOut" }}
       >
-        {/* {title}  */} RESOLV PROTOCOL
+       {title}  
       </motion.h1>
 
       {/* WELCOME - fades in & grows */}
