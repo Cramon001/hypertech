@@ -12,6 +12,124 @@ body {
 
 
 
+/* ================= LOADING DOTS ================= */
+
+.load-row {
+  width: 100px;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  margin-left: 50px;
+  margin-top: -5px;
+}
+
+.load-row span {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background: #f76002;
+  border-radius: 50px;
+  animation: up-down6 0.7s ease-in infinite alternate;
+  margin-left: 12px;
+  margin-top: -10px;
+}
+
+.load-row span:nth-child(2) {
+  background: #e85b04c4;
+  animation-delay: 0.16s;
+}
+
+.load-row span:nth-child(3) {
+  background: #e85b0491;
+  animation-delay: 0.42s;
+  margin-top: 0px;
+}
+
+.load-row span:nth-child(4) {
+  background: #e85b0456;
+  animation-delay: 0.48s;
+}
+
+@keyframes up-down6 {
+  0% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(10px);
+  }
+}
+
+/* ================= SPINNER ================= */
+
+.loader {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  box-sizing: border-box;
+  border-top: 8px solid #fff;
+  border-left: 8px solid #fff;
+  border-right: 8px solid #ff00;
+  animation: loader 0.7s infinite linear;
+}
+
+@keyframes loader {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ================= SMOOTH BLACK–GRAY BACKGROUND ================= */
+
+.bg-animated-gradient {
+  background-image: linear-gradient(
+    -45deg,
+    #000000,
+    #111111,
+    #1e1e1e,
+    #2c2c2c,
+    #3b3b3b
+  );
+  background-size: 300% 300%;
+  animation: gradient-slide 12s ease-in-out infinite;
+}
+
+@keyframes gradient-slide {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* ================= DARK BUTTON ================= */
+
+.dark-btn {
+  padding: 12px 26px;
+  border-radius: 12px;
+  border: 1px solid #4a4a4a;
+  background: linear-gradient(145deg, #0a0a0a, #1b1b1b);
+  color: #eaeaea;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+/* Hover effect */
+.dark-btn:hover {
+  background: linear-gradient(145deg, #1e1e1e, #2b2b2b);
+  box-shadow: 0 0 18px rgba(255, 255, 255, 0.12);
+  transform: translateY(-2px);
+}
+
+/* Active click effect */
+.dark-btn:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
 
 /* GEAR LOADING */
 
