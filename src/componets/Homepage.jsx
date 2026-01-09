@@ -79,8 +79,10 @@ const Homepage = () => {
       <motion.button
         onClick={openModal}
         className="
-          px-6 py-2 rounded text-white
-          bg-animated-gradient bg-[length:400%_400%] animate-gradient-bg
+          px-6 py-2 rounded text-white 
+      {/*  bg-animated-gradient bg-[length:400%_400%] animate-gradient-bg */}
+          bg-[oklch(44.6% 0.03 256.802)]
+
           hover:brightness-110 transition cursor-pointer drop-shadow-lg
           font-semibold tracking-wide
         "
