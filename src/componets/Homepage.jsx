@@ -98,7 +98,7 @@ const Homepage = () => {
         animate={{ x: 0, opacity: 1 }}
         transition={{ delay: 3.5, duration: 1, ease: "easeOut" }}
       >
-        Next-Gen V4 AMM unlocking hyper-efficient liquidity on Hyper EVM.
+       Accessing blockchain at the best possible terms powered by open infrastructure that serves, not extracts.
       </motion.p>
     </div>
   );
