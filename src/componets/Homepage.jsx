@@ -76,21 +76,21 @@ const Homepage = () => {
       </motion.p>
 
       {/* Button - appears normally with slight fade */}
-      <motion.button
-        onClick={openModal}
-        className="
-          px-6 py-2 rounded text-white 
-          bg-[oklch(44.6% 0.03 256.802)]
+   <motion.button
+  onClick={openModal}
+  className="
+    px-6 py-2 rounded text-white 
+    bg-gray-500
+    hover:brightness-110 transition cursor-pointer drop-shadow-lg
+    font-semibold tracking-wide
+  "
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  transition={{ delay: 3, duration: 0.8 }}
+>
+  ENTER APP
+</motion.button>
 
-          hover:brightness-110 transition cursor-pointer drop-shadow-lg
-          font-semibold tracking-wide
-        "
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 3, duration: 0.8 }}
-      >
-        ENTER APP
-      </motion.button>
 
       {/* Next-Gen V4 AMM - comes from left */}
       <motion.p
