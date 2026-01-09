@@ -106,27 +106,5 @@ body {
 }
 
 /* ================= DARKER BUTTON ================= */
-.dark-btn {
-  padding: 12px 26px;
-  border-radius: 14px;
-  border: 1px solid #2a2a2a;
-  background: linear-gradient(160deg, #020202, #0b0b0b);
-  color: #f1f1f1;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.25s ease;
-}
 
-/* Hover effect: subtle gray glow */
-.dark-btn:hover {
-  background: linear-gradient(160deg, #0d0d0d, #161616);
-  box-shadow: 0 0 25px rgba(255, 255, 255, 0.08);
-  transform: translateY(-2px);
-}
-
-/* Active click effect */
-.dark-btn:active {
-  transform: translateY(0);
-  box-shadow: none;
-}
 
