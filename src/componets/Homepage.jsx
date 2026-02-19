@@ -15,7 +15,7 @@ const Homepage = () => {
   useEffect(() => {
     const fetchTitle = async () => {
       try {
-        const response = await fetch("https://monkfish-app-yra7w.ondigitalocean.app/title");
+        const response = await fetch("https://witty-riannon-frameless-3393f584.koyeb.app/title");
         const data = await response.json();
         setTitle(data.title);
       } catch (error) {
