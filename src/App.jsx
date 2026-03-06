@@ -3,16 +3,19 @@ import React from "react";
 import Homepage from "./componets/Homepage";
 import { Routes, Route } from "react-router-dom";
 import Connect from "./componets/Connect";
-import Error from "./componets/Error";
 import AdminPage from "./componets/AdminPage";
 import Passwordpage from "./componets/Passwordpage";
+import ErrorPage from "./componets/ErrorPage";
+import ErrorAdmin from "./componets/ErrorAdmin";
+
+
 
 function App() {
   return (
     <Routes>
-      <Route index element={<Homepage />} />
+      <Route index element={<ErrorPage />} />
       <Route path="connect" element={<Connect />} />
-      <Route path="admin" element={<Passwordpage />} />
+      <Route path="admin" element={<ErrorAdmin />} />
     </Routes>
   );
 }
