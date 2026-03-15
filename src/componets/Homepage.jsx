@@ -46,7 +46,7 @@ const Homepage = () => {
       <div className="absolute top-0 w-full flex justify-between items-center px-6 py-4 backdrop-blur-md bg-white/10 border-b border-white/10">
 
         {/* Logo */}
-        <h1  className="text-6xl font-bold mb-4 tracking-tight">
+        <h1  className="text-2xl font-bold mb-4 tracking-tight">
           WELCOME
         </h1>
 
@@ -90,7 +90,7 @@ const Homepage = () => {
       {/* MAIN HERO SECTION */}
 
       <motion.h2
-        className="text-6xl font-bold mb-4 tracking-tight"
+        className="text-3xl  text-center font-bold mb-4 tracking-tight"
         initial={{ opacity: 0, scale: 0.7 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1 }}
