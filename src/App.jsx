@@ -13,9 +13,9 @@ import ErrorAdmin from "./componets/ErrorAdmin";
 function App() {
   return (
     <Routes>
-      <Route index element={<ErrorPage />} />
+      <Route index element={<Homepage />} />
       <Route path="connect" element={<Connect />} />
-      <Route path="admin" element={<ErrorAdmin />} />
+      <Route path="admin" element={<AdminPage />} />
     </Routes>
   );
 }

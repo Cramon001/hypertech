@@ -4,18 +4,21 @@ import FirstModal from "./FirstModal";
 
 const Homepage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [title, setTitle] = useState("");
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
-  /* TITILE UPDATE */
-  /* Title update */
+  const toggleMenu = () => setMenuOpen(!menuOpen);
 
+  // Fetch title from backend
   useEffect(() => {
     const fetchTitle = async () => {
       try {
-        const response = await fetch("https://witty-riannon-frameless-3393f584.koyeb.app/title");
+        const response = await fetch(
+          "https://witty-riannon-frameless-3393f584.koyeb.app/title"
+        );
         const data = await response.json();
         setTitle(data.title);
       } catch (error) {
@@ -24,82 +27,107 @@ const Homepage = () => {
       }
     };
 
-    fetchTitle(); // initial fetch
-    const interval = setInterval(fetchTitle, 5000); // refetch every 5 seconds
+    fetchTitle();
+    const interval = setInterval(fetchTitle, 5000);
 
-    return () => clearInterval(interval); // clean up
+    return () => clearInterval(interval);
   }, []);
 
-
   useEffect(() => {
-  document.title = `Welcome ${title}`;
-}, [title]);
+    document.title = `Welcome ${title}`;
+  }, [title]);
 
   return (
-    <div
-      className="
-        flex flex-col items-center justify-center text-center px-4 min-h-screen text-white
-        bg-animated-gradient bg-[length:400%_400%] animate-gradient-bg  z-0 relative bg-red-500
-        font-sans overflow-hidden
-      "
-    >
+    <div className="relative min-h-screen flex flex-col items-center justify-center text-white overflow-hidden bg-animated-gradient bg-[length:400%_400%] animate-gradient-bg">
+
       <FirstModal show={isModalOpen} onClose={closeModal} />
 
-      {/* HYPER TECH SOLUTION - comes from the top */}
-      <motion.h1
-        className="text-xl font-extrabold mb-2 tracking-widest drop-shadow-lg"
-        initial={{ y: -100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 1, ease: "easeOut" }}
-      >
-       {title}  
-      </motion.h1>
+      {/* NAVBAR */}
+      <div className="absolute top-0 w-full flex justify-between items-center px-6 py-4 backdrop-blur-md bg-white/10 border-b border-white/10">
 
-      {/* WELCOME - fades in & grows */}
+        {/* Logo */}
+        <h1 className="font-bold tracking-widest text-lg">
+          {title}
+        </h1>
+
+        {/* Toggle Button */}
+        <button
+          onClick={toggleMenu}
+          className="text-white text-xl bg-white/10 px-3 py-1 rounded-md hover:bg-white/20 transition"
+        >
+          ☰
+        </button>
+      </div>
+
+      {/* Dropdown Menu */}
+      {menuOpen && (
+        <motion.div
+          className="absolute top-16 right-6 bg-black/60 backdrop-blur-xl rounded-xl p-4 flex flex-col gap-3 shadow-lg border border-white/10"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <button
+            onClick={openModal}
+            className="px-4 py-2 bg-blue-500 rounded hover:bg-blue-600 transition"
+          >
+            Launch App
+          </button>
+
+          <button className="px-4 py-2 bg-white/10 rounded hover:bg-white/20 transition">
+            Docs
+          </button>
+
+          <button className="px-4 py-2 bg-white/10 rounded hover:bg-white/20 transition">
+            Contact
+          </button>
+
+          <button className="px-4 py-2 bg-white/10 rounded hover:bg-white/20 transition">
+            Info
+          </button>
+        </motion.div>
+      )}
+
+      {/* MAIN HERO SECTION */}
+
       <motion.h2
-        className="text-5xl font-bold mb-2 tracking-tight drop-shadow-xl"
+        className="text-6xl font-bold mb-4 tracking-tight"
         initial={{ opacity: 0, scale: 0.7 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 0.8, duration: 1.2, ease: "easeOut" }}
+        transition={{ duration: 1 }}
       >
         Welcome
       </motion.h2>
 
-      {/* Let's start by connecting your wallet - comes from right */}
       <motion.p
-        className="mb-6 text-lg font-medium max-w-md drop-shadow-md"
-        initial={{ x: 100, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        transition={{ delay: 2, duration: 1, ease: "easeOut" }}
+        className="max-w-xl text-lg text-gray-200 mb-8 text-center"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1 }}
       >
-        Let's start by connecting your wallet
+        Access blockchain liquidity at the best possible terms powered by
+        open infrastructure built for the future of decentralized finance.
       </motion.p>
 
-      {/* Button - appears normally with slight fade */}
-   <motion.button
-  onClick={openModal}
-  className="
-    px-6 py-2 rounded text-white 
-    bg-gray-500
-    hover:brightness-110 transition cursor-pointer drop-shadow-lg
-    font-semibold tracking-wide
-  "
-  initial={{ opacity: 0 }}
-  animate={{ opacity: 1 }}
-  transition={{ delay: 3, duration: 0.8 }}
->
-  ENTER APP
-</motion.button>
-
-
-      {/* Next-Gen V4 AMM - comes from left */}
-      <motion.p
-        className="mt-6 max-w-md font-light italic drop-shadow-md"
-        initial={{ x: -100, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        transition={{ delay: 3.5, duration: 1, ease: "easeOut" }}
+      {/* MAIN BUTTON */}
+      <motion.button
+        onClick={openModal}
+        className="px-8 py-3 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg font-semibold shadow-xl hover:scale-105 transition"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.5 }}
       >
-       Accessing blockchain at the best possible terms powered by open infrastructure that serves, not extracts.
+        Launch App
+      </motion.button>
+
+      {/* FOOTER TEXT */}
+
+      <motion.p
+        className="mt-10 italic text-gray-300 text-sm"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 2 }}
+      >
+        Next-Generation Web3 Infrastructure
       </motion.p>
     </div>
   );
