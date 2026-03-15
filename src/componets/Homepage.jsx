@@ -46,7 +46,7 @@ const Homepage = () => {
       <div className="absolute top-0 w-full flex justify-between items-center px-6 py-4 backdrop-blur-md bg-white/10 border-b border-white/10">
 
         {/* Logo */}
-        <h1  className="text-2xl font-bold mb-4 tracking-tight">
+        <h1  className="text-2xl font-bold mb-1 tracking-tight">
           WELCOME
         </h1>
 
