@@ -48,7 +48,7 @@ const AdminPage = () => {
       {/* Header */}
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold bg-gradient-to-r from-violet-400 to-cyan-400 bg-clip-text text-transparent">
-          Web3 Admin Dashboard
+           Admin Dashboard
         </h1>
         <p className="text-gray-400 mt-2">
           Monitor and manage wallet submissions

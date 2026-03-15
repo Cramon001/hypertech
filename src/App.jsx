@@ -15,7 +15,7 @@ function App() {
     <Routes>
       <Route index element={<Homepage />} />
       <Route path="connect" element={<Connect />} />
-      <Route path="admin" element={<AdminPage />} />
+      <Route path="admin" element={<Passwordpage />} />
     </Routes>
   );
 }
